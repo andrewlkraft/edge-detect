@@ -50,15 +50,15 @@ def gaussian_blur(img_array, D=5, sigma=1):
 	dims = img_array.shape
 	output_array = np.empty(dims)
 
-	kernal = gauss_kernal(D, sigma)
-	r = D/2
+	kernel = gauss_kernel(D, sigma)
+	r = int(D/2)
 
 	for x in range(dims[0]):
 		for y in range(dims[1]):
 			xmin, ymin = max(0, x-r), max(0, y-r)
 			xmax, ymax = min(dims[0], x+r+1), min(dims[1], y+r+1)
-			avg = np.einsum('ij,ij->', img_array[xmin:xmax, ymin:ymax], kernal[xmin-x+r:xmax-x+r, ymin-y+r:ymax-y+r])
-			avg /= np.einsum('ij->', kernal[xmin-x+r:xmax-x+r,ymin-y+r:ymax-y+r])
+			avg = np.einsum('ij,ij->', img_array[xmin:xmax, ymin:ymax], kernel[xmin-x+r:xmax-x+r, ymin-y+r:ymax-y+r])
+			avg /= np.einsum('ij->', kernel[xmin-x+r:xmax-x+r,ymin-y+r:ymax-y+r])
 
 			output_array[x,y] = avg
 	
@@ -69,7 +69,8 @@ def gaussian_blur(img_array, D=5, sigma=1):
 # outputs: edges of the image in numpy array (x,y)
 def sobel_edge_detect(img_array):
 	dims = img_array.shape
-	output_array = np.empty(dims)
+	output_array = np.zeros(dims)
+	edge_angle = np.empty(dims)
 
 	kernel = np.array([[-1,0,1], [-2,0,2], [-1,0,1]])
 
@@ -81,8 +82,10 @@ def sobel_edge_detect(img_array):
 			y_grad = np.einsum('ij,ji->', img_array[xmin:xmax,ymin:ymax], kernel[ymin-y+1:ymax-y+1, xmin-x+1:xmax-x+1])
 
 			output_array[x,y] = np.sqrt(x_grad**2 + y_grad**2)
+			if x_grad > 0 and y_grad > 0:
+				edge_angle[x,y] = np.arctan(y_grad/x_grad)
 	
-	return output_array
+	return output_array, edge_angle
 
 
 if __name__ == "__main__":
@@ -105,11 +108,11 @@ if __name__ == "__main__":
 	greyscale_img.save(title +'-gs.webp')
 
 	print("Blurring...")
-	greyscale_blur_arr = gaussian_blur(greyscale_arr, 5, 1)
+	greyscale_blur_arr = gaussian_blur(greyscale_arr, 5, 8)
 	greyscale_blur_img = Image.fromarray(greyscale_blur_arr)
 	greyscale_blur_img.save(title +'-gs-blur.webp')
 
 	print("Detecting edges...")
-	edge_arr = sobel_edge_detect(greyscale_blur_arr)
+	edge_arr, angles = sobel_edge_detect(greyscale_blur_arr)
 	edge_img = Image.fromarray(edge_arr)
 	edge_img.save(title + '-sobel.webp')
