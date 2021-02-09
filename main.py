@@ -42,22 +42,23 @@ def gauss_kernal(d, sigma):
 
 #
 # creates blurred version of given image (so far only works for greyscale images)
-# inputs: np.array of shape (x,y) representing an image of dimensions (x,y)
+# inputs: np.array of shape (x,y) representing an image of dimensions (x,y) D representing diameter of blur, sigma standard deviation
 # outputs: np.array of shape (x,y) representing blurred version of image
 #
 # einsum: https://stackoverflow.com/questions/26089893/understanding-numpys-einsum
-def gaussian_blur(img_array):
+def gaussian_blur(img_array, D=5, sigma=1):
 	dims = img_array.shape
 	output_array = np.empty(dims)
 
-	kernal = gauss_kernal(5, 1)
+	kernal = gauss_kernal(D, sigma)
+	r = D/2
 
 	for x in range(dims[0]):
 		for y in range(dims[1]):
-			xmin, ymin = max(0, x-2), max(0, y-2)
-			xmax, ymax = min(dims[0], x+3), min(dims[1], y+3)
-			avg = np.einsum('ij,ij->', img_array[xmin:xmax, ymin:ymax], kernal[xmin-x+2:xmax-x+2, ymin-y+2:ymax-y+2])
-			avg /= np.einsum('ij->', kernal[xmin-x+2:xmax-x+2,ymin-y+2:ymax-y+2])
+			xmin, ymin = max(0, x-r), max(0, y-r)
+			xmax, ymax = min(dims[0], x+r+1), min(dims[1], y+r+1)
+			avg = np.einsum('ij,ij->', img_array[xmin:xmax, ymin:ymax], kernal[xmin-x+r:xmax-x+r, ymin-y+r:ymax-y+r])
+			avg /= np.einsum('ij->', kernal[xmin-x+r:xmax-x+r,ymin-y+r:ymax-y+r])
 
 			output_array[x,y] = avg
 	
@@ -94,22 +95,21 @@ if __name__ == "__main__":
 		exit(0)
 
 	title = fname[0]
-	ext = fname[1]
 
-	img = Image.open(title + '.' + ext)
+	img = Image.open(sys.argv[1])
 	img_arr = np.array(img)
 
 	print("Converting to greyscale...")
 	greyscale_arr = create_greyscale(img_arr)
 	greyscale_img = Image.fromarray(greyscale_arr)
-	greyscale_img.save(title +'-gs.'+ ext)
+	greyscale_img.save(title +'-gs.webp')
 
 	print("Blurring...")
-	greyscale_blur_arr = gaussian_blur(greyscale_arr)
+	greyscale_blur_arr = gaussian_blur(greyscale_arr, 5, 1)
 	greyscale_blur_img = Image.fromarray(greyscale_blur_arr)
-	greyscale_blur_img.save(title +'-gs-blur.'+ ext)
+	greyscale_blur_img.save(title +'-gs-blur.webp')
 
 	print("Detecting edges...")
 	edge_arr = sobel_edge_detect(greyscale_blur_arr)
 	edge_img = Image.fromarray(edge_arr)
-	edge_img.save(title + '-edge.' + ext)
+	edge_img.save(title + '-sobel.webp')
