@@ -94,7 +94,7 @@ if __name__ == "__main__":
 	try:	
 		fname = sys.argv[1].split('.')
 	except(IndexError):
-		print("Usage: python main.py <filename>")
+		print("Usage: python sobel.py <filename>")
 		exit(0)
 
 	title = fname[0]
