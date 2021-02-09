@@ -16,14 +16,14 @@ def create_greyscale(img_array):
 			greyscale_array[x,y] = RED*img_array[x,y,0] + GRN*img_array[x,y,1]  + BLU*img_array[x,y,2]
 	return greyscale_array
 
-# creates gaussian kernal with specified dimensions
+# creates gaussian kernel with specified dimensions
 # inputs: 
-# d representing side length of square kernal matrix
+# d representing side length of square kernel matrix
 # sigma representing standard deviation for gaussian distribution
-# outputs: np.array of shape (2r-1, 2r-1) representing gaussian kernal
+# outputs: np.array of shape (2r-1, 2r-1) representing gaussian kernel
 # 
 # https://en.wikipedia.org/wiki/Gaussian_blur
-def gauss_kernal(d, sigma):
+def gauss_kernel(d, sigma):
 	if(d % 2 == 0):
 		print("d must be odd")
 		exit(0)
@@ -50,14 +50,14 @@ def gaussian_blur(img_array):
 	dims = img_array.shape
 	output_array = np.empty(dims)
 
-	kernal = gauss_kernal(5, 1)
+	kernel = gauss_kernel(5, 1)
 
 	for x in range(dims[0]):
 		for y in range(dims[1]):
 			xmin, ymin = max(0, x-2), max(0, y-2)
 			xmax, ymax = min(dims[0], x+3), min(dims[1], y+3)
-			avg = np.einsum('ij,ij->', img_array[xmin:xmax, ymin:ymax], kernal[xmin-x+2:xmax-x+2, ymin-y+2:ymax-y+2])
-			avg /= np.einsum('ij->', kernal[xmin-x+2:xmax-x+2,ymin-y+2:ymax-y+2])
+			avg = np.einsum('ij,ij->', img_array[xmin:xmax, ymin:ymax], kernel[xmin-x+2:xmax-x+2, ymin-y+2:ymax-y+2])
+			avg /= np.einsum('ij->', kernel[xmin-x+2:xmax-x+2,ymin-y+2:ymax-y+2])
 
 			output_array[x,y] = avg
 	
@@ -70,14 +70,14 @@ def sobel_edge_detect(img_array):
 	dims = img_array.shape
 	output_array = np.empty(dims)
 
-	kernal = np.array([[-1,0,1], [-2,0,2], [-1,0,1]])
+	kernel = np.array([[-1,0,1], [-2,0,2], [-1,0,1]])
 
 	for x in range(dims[0]):
 		for y in range(dims[1]):
 			xmin, ymin = max(0, x-1), max(0, y-1)
 			xmax, ymax = min(dims[0], x+2), min(dims[1], y+2)
-			x_grad = np.einsum('ij,ij->', img_array[xmin:xmax,ymin:ymax], kernal[xmin-x+1:xmax-x+1, ymin-y+1:ymax-y+1])
-			y_grad = np.einsum('ij,ji->', img_array[xmin:xmax,ymin:ymax], kernal[ymin-y+1:ymax-y+1, xmin-x+1:xmax-x+1])
+			x_grad = np.einsum('ij,ij->', img_array[xmin:xmax,ymin:ymax], kernel[xmin-x+1:xmax-x+1, ymin-y+1:ymax-y+1])
+			y_grad = np.einsum('ij,ji->', img_array[xmin:xmax,ymin:ymax], kernel[ymin-y+1:ymax-y+1, xmin-x+1:xmax-x+1])
 
 			output_array[x,y] = np.sqrt(x_grad**2 + y_grad**2)
 	
