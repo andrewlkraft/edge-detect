@@ -11,6 +11,6 @@ I wrote this code for learning purposes, these algorithms are not at all optimiz
 
 ## cartoon.py
 This program bundles up both the sobel and kmeans programs and uses them to produce a cartoon-looking image with thick black lines around the edges of objects
-
-![original image](https://github.com/andrewlkraft/edge-detect/images/clown.jpg?raw=true)
-![cartoon-ified](https://github.com/andrewlkraft/edge-detect/images/clown-cartoon.webp?raw=true)
+| original | cartoon |
+|-|-|
+| <img src="https://github.com/andrewlkraft/edge-detect/blob/main/images/clown.jpeg?raw=true" alt="original" width="200" /> | <img src="https://github.com/andrewlkraft/edge-detect/blob/main/images/clown-cartoon.webp?raw=true" alt="cartoon" width="200" /> |
