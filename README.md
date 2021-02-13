@@ -10,7 +10,7 @@ Sample flower image from [pexels.com](https://images.pexels.com/photos/736230/pe
 I wrote this code for learning purposes, these algorithms are not at all optimized. I wouldn't recommend running them on large images as it could take a while to run (keep it within 1000x1000 pixels).
 
 ## cartoon.py
-This program bundles up both the sobel and kmeans programs and uses them to produce a cartoon-looking image with thick black lines around the edges of objects
+This program uses elements of both the sobel and kmeans programs to produce a cartoon-looking image with thick black lines around the edges of objects
 | original | cartoon |
 |-|-|
 | <img src="https://github.com/andrewlkraft/edge-detect/blob/main/images/clown.jpeg?raw=true" alt="original" width="200" /> | <img src="https://github.com/andrewlkraft/edge-detect/blob/main/images/clown-cartoon.webp?raw=true" alt="cartoon" width="200" /> |
