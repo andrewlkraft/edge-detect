@@ -7,7 +7,7 @@ Links to the learning resources and sites I found helfpul are in the code.
 
 Sample flower image from [pexels.com](https://images.pexels.com/photos/736230/pexels-photo-736230.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500). All the rest of the images were taken by me.
 
-I wrote this code for learning purposes, these algorithms are not at all optimized. I wouldn't recommend running them on large images as it could take a while to run (keep it within 1000x1000 pixels).
+I wrote this code for learning purposes, these algorithms are not well optimized. I wouldn't recommend running them on large images as it could take a while to run (keep it within 1000x1000 pixels).
 
 ## sobel.py
 Highlights the edges of an image. First it converts the image to greyscale, then blurs slightly to remove noise, then runs sobel operator over the image.
