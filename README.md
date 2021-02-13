@@ -14,3 +14,5 @@ This program bundles up both the sobel and kmeans programs and uses them to prod
 | original | cartoon |
 |-|-|
 | <img src="https://github.com/andrewlkraft/edge-detect/blob/main/images/clown.jpeg?raw=true" alt="original" width="200" /> | <img src="https://github.com/andrewlkraft/edge-detect/blob/main/images/clown-cartoon.webp?raw=true" alt="cartoon" width="200" /> |
+
+(Yes, that's me in the clown suit)
