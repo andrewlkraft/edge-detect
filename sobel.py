@@ -53,6 +53,7 @@ def gaussian_blur(img_array, D=5, sigma=1):
 	kernel = gauss_kernel(D, sigma)
 	r = int(D/2)
 
+	"""
 	try:
 		c = dims[2]
 		print("Color image")
@@ -67,15 +68,16 @@ def gaussian_blur(img_array, D=5, sigma=1):
 
 				output_array[x,y] = avg[i]
 	except(IndexError):
-		print("Greyscale image")
-		for x in range(dims[0]):
-			for y in range(dims[1]):
-				xmin, ymin = max(0, x-r), max(0, y-r)
-				xmax, ymax = min(dims[0], x+r+1), min(dims[1], y+r+1)
-				avg = np.einsum('ij,ij->', img_array[xmin:xmax, ymin:ymax], kernel[xmin-x+r:xmax-x+r, ymin-y+r:ymax-y+r])
-				avg /= np.einsum('ij->', kernel[xmin-x+r:xmax-x+r,ymin-y+r:ymax-y+r])
+	"""
+	print("Greyscale image")
+	for x in range(dims[0]):
+		for y in range(dims[1]):
+			xmin, ymin = max(0, x-r), max(0, y-r)
+			xmax, ymax = min(dims[0], x+r+1), min(dims[1], y+r+1)
+			avg = np.einsum('ij,ij->', img_array[xmin:xmax, ymin:ymax], kernel[xmin-x+r:xmax-x+r, ymin-y+r:ymax-y+r])
+			avg /= np.einsum('ij->', kernel[xmin-x+r:xmax-x+r,ymin-y+r:ymax-y+r])
 
-				output_array[x,y] = avg
+			output_array[x,y] = avg
 	
 		
 	return output_array
@@ -117,20 +119,22 @@ if __name__ == "__main__":
 	img = Image.open(sys.argv[1])
 	img_arr = np.array(img)
 
+	"""
 	print("Blurring...")
 	blur_arr = gaussian_blur(img_arr, 5, 8)
 	blur_img = Image.fromarray(blur_arr)
 	blur_img.save(title +'-blur.webp')
-
+	"""
+	
 	print("Converting to greyscale...")
 	greyscale_arr = create_greyscale(img_arr)
 	greyscale_img = Image.fromarray(greyscale_arr)
 	greyscale_img.save(title +'-gs.webp')
 
-	# print("Blurring...")
-	# greyscale_blur_arr = gaussian_blur(greyscale_arr, 5, 8)
-	# greyscale_blur_img = Image.fromarray(greyscale_blur_arr)
-	# greyscale_blur_img.save(title +'-gs-blur.webp')
+	print("Blurring...")
+	greyscale_blur_arr = gaussian_blur(greyscale_arr, 5, 8)
+	greyscale_blur_img = Image.fromarray(greyscale_blur_arr)
+	greyscale_blur_img.save(title +'-gs-blur.webp')
 
 	print("Running sobel...")
 	edge_arr, angles = sobel_edge_detect(greyscale_blur_arr)

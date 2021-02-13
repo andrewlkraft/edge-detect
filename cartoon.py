@@ -57,13 +57,12 @@ if __name__ == "__main__":
 	edge_img.save(title + '-sobel.webp')
 
 	print("Finding kmeans...")
-	if flag=="--blur":
-		print("Blurring...")
-		blur_arr = blur(img_arr, 5, 8)
-		blur_img = Image.fromarray(blur_arr)
-		blur_img.save(title +'-blur.webp')
-	else:
-		kmeans_img = kmeans_img(img_arr, k)
+	# if flag=="--blur":
+		# print("Blurring...")
+		# blur_arr = blur(img_arr, 5, 8)
+		# blur_img = Image.fromarray(blur_arr)
+		# blur_img.save(title +'-blur.webp')
+	kmeans_img = kmeans_img(img_arr, k)
 	kmeans_img.save(title + '-kmeans.webp')
 	kmeans_arr = np.array(kmeans_img)
 
